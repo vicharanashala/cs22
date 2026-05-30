@@ -1,8 +1,50 @@
+# =========================
+# System Files
+# =========================
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# =========================
+# Editor & IDE
+# =========================
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# =========================
+# Node / Frontend (Vite/React)
+# =========================
 node_modules/
 dist/
-.env
+dist-ssr/
+*.local
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# =========================
+# Python / Backend
+# =========================
 venv/
+env/
 __pycache__/
-*.pyc
-.DS_Store
-.vscode/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+.env
+
+# =========================
+# Application Data
+# =========================
+# Ignore local database/state files
+votes.json

@@ -1,5 +1,6 @@
 import re
 import json
+import html
 
 file_path = r'C:\Users\LENOVO\.gemini\antigravity\brain\d7ae40e5-6ace-450f-b6be-c61700e68a87\.system_generated\steps\5\content.md'
 
@@ -19,7 +20,9 @@ for match in pattern.finditer(content):
     question = match.group(2).strip()
     # Strip any remaining anchor tags if they weren't caught by the optional group
     question = re.sub(r'<a .*?>.*?</a>', '', question).strip()
-    answer = match.group(3).strip()
+    question = html.unescape(question)
+    answer = html.unescape(match.group(3).strip())
+
     
     # Try to determine the section based on the q_id (e.g. q-1-1 -> section 1)
     section_match = re.match(r'q-(\d+)-', q_id)

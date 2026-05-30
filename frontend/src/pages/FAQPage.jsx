@@ -13,6 +13,7 @@ function FAQPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState({});
+  const [activeSection, setActiveSection] = useState('');
 
   useEffect(() => {
     fetchData();
@@ -21,13 +22,48 @@ function FAQPage() {
     if (saved) setUserVotes(JSON.parse(saved));
   }, []);
 
+  // Monitor which category is currently in view to highlight in sidebar
+  useEffect(() => {
+    if (faqs.length === 0) return;
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '-110px 0px -65% 0px', // trigger highlight when category header enters top-middle of viewport
+      threshold: 0,
+    };
+
+    const observerCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const secId = entry.target.id.replace('sec-', '');
+          setActiveSection(secId);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    const targets = document.querySelectorAll('.faq-category');
+    targets.forEach((target) => observer.observe(target));
+
+    return () => {
+      targets.forEach((target) => observer.unobserve(target));
+    };
+  }, [faqs, searchQuery]);
+
   const fetchData = async () => {
     try {
       const [faqsRes, votesRes] = await Promise.all([
         fetch(`${API_BASE}/faqs`),
         fetch(`${API_BASE}/votes`)
       ]);
-      setFaqs(await faqsRes.json());
+      const faqsData = await faqsRes.json();
+      setFaqs(faqsData);
+      
+      // Default active section to the first section loaded
+      if (faqsData.length > 0) {
+        setActiveSection(faqsData[0].id);
+      }
+      
       setVotes(await votesRes.json());
       setLoading(false);
     } catch (err) {
@@ -77,6 +113,16 @@ function FAQPage() {
     setExpanded(newExpanded);
   };
   const collapseAll = () => setExpanded({});
+
+  const handleScrollToSection = (id) => {
+    const el = document.getElementById(`sec-${id}`);
+    if (el) {
+      const yOffset = -100; // Account for the sticky header
+      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+      setActiveSection(id);
+    }
+  };
 
   if (loading) return <div style={{ color: 'white', padding: '4rem 2rem', textAlign: 'center' }}>Loading FAQs…</div>;
 
@@ -139,28 +185,64 @@ function FAQPage() {
             <button onClick={expandAll} className="btn-ghost">Expand All</button>
             <button onClick={collapseAll} className="btn-ghost">Collapse All</button>
           </div>
-          <div>
-            {filteredFaqs.map(section => (
-              <div key={section.id} className="faq-category">
-                <h3>{section.title}</h3>
-                <div className="faq-list">
-                  {section.questions.map(faq => (
-                    <FAQItem
-                      key={faq.id}
-                      faq={faq}
-                      isExpanded={!!expanded[faq.id]}
-                      onToggle={() => toggleExpand(faq.id)}
-                      votes={votes[faq.id]}
-                      userVote={userVotes[faq.id] || null}
-                      onVote={handleVote}
-                    />
-                  ))}
-                </div>
+
+          <div className="faq-layout">
+            {/* ── Left Sidebar (Desktop Only) ── */}
+            <aside className="faq-sidebar-container">
+              <div className="faq-sidebar-title">Categories</div>
+              <div className="faq-sidebar-list">
+                {filteredFaqs.map(sec => (
+                  <button
+                    key={sec.id}
+                    className={`faq-sidebar-link ${activeSection === sec.id ? 'active' : ''}`}
+                    onClick={() => handleScrollToSection(sec.id)}
+                    title={sec.title}
+                  >
+                    {sec.title.split('. ')[1] || sec.title}
+                  </button>
+                ))}
               </div>
-            ))}
-            {filteredFaqs.length === 0 && (
-              <p style={{ color: 'var(--text-muted)' }}>No questions found for "{searchQuery}".</p>
-            )}
+            </aside>
+
+            {/* ── Right Content Container ── */}
+            <div className="faq-content-main">
+              {/* Sticky Horizontally Scrollable Chips (Mobile Only) */}
+              <nav className="faq-mobile-chips">
+                {filteredFaqs.map(sec => (
+                  <button
+                    key={sec.id}
+                    className={`faq-mobile-chip ${activeSection === sec.id ? 'active' : ''}`}
+                    onClick={() => handleScrollToSection(sec.id)}
+                  >
+                    {sec.title.split('. ')[1] || sec.title}
+                  </button>
+                ))}
+              </nav>
+
+              <div>
+                {filteredFaqs.map(section => (
+                  <div key={section.id} id={`sec-${section.id}`} className="faq-category">
+                    <h3>{section.title}</h3>
+                    <div className="faq-list">
+                      {section.questions.map(faq => (
+                        <FAQItem
+                          key={faq.id}
+                          faq={faq}
+                          isExpanded={!!expanded[faq.id]}
+                          onToggle={() => toggleExpand(faq.id)}
+                          votes={votes[faq.id]}
+                          userVote={userVotes[faq.id] || null}
+                          onVote={handleVote}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+                {filteredFaqs.length === 0 && (
+                  <p style={{ color: 'var(--text-muted)' }}>No questions found for "{searchQuery}".</p>
+                )}
+              </div>
+            </div>
           </div>
         </section>
       </main>

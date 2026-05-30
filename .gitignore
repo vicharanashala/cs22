@@ -2,6 +2,7 @@
 # System Files
 # =========================
 .DS_Store
+Thumbs.db
 *.suo
 *.ntvs*
 *.njsproj
@@ -13,16 +14,17 @@
 # =========================
 .vscode/*
 !.vscode/extensions.json
-.idea
+.idea/
+*.iml
 
 # =========================
-# Node / Frontend (Vite/React)
+# Node / Frontend (Vite + React)
 # =========================
 node_modules/
 dist/
 dist-ssr/
 *.local
-logs
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -33,18 +35,73 @@ lerna-debug.log*
 # =========================
 # Python / Backend
 # =========================
+# Virtual environments
 venv/
 env/
+.venv/
+ENV/
+
+# Compiled Python
 __pycache__/
 *.py[cod]
 *$py.class
+*.pyo
+*.pyd
+
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Testing
 .pytest_cache/
 .coverage
 htmlcov/
-.env
+.tox/
+.nox/
+coverage.xml
+*.cover
+
+# Type checkers
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pytype/
 
 # =========================
-# Application Data
+# Environment & Secrets
 # =========================
-# Ignore local database/state files
+.env
+.env.*
+!.env.example
+*.key
+
+# =========================
+# Application Data / State
+# =========================
+# Local database/state files — do not commit
 votes.json
+
+# Scratch / temp test files
+test_*.py
+*_test.py
+
+# =========================
+# OS & Misc
+# =========================
+*.bak
+*.tmp
+*.swp
+*~

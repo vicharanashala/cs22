@@ -1,10 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react';
 
+const INITIAL_GREETING = {
+  id: '1',
+  text: "Hi! I'm Yaksha, your Vicharanashala Internship assistant. Ask me anything about VINS, the NOC process, ViBe, certificates, or any programme-related question.",
+  sender: 'system',
+};
+
+const SUGGESTED_QUESTIONS = [
+  "What is VINS?",
+  "How do I upload the NOC?",
+  "Is there a stipend?",
+  "What is the four-badge journey?",
+];
+
 function Chatbot({ apiUrl }) {
   const [isOpen, setIsOpen]     = useState(false);
-  const [messages, setMessages] = useState([
-    { id: '1', text: "Hi! I'm Yaksha, your Vicharanashala Internship assistant. Ask me anything about VINS, the NOC process, ViBe, certificates, or any programme-related question.", sender: 'system' }
-  ]);
+  const [messages, setMessages] = useState([INITIAL_GREETING]);
   const [input, setInput]       = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const bodyRef                 = useRef(null);
@@ -27,11 +38,8 @@ function Chatbot({ apiUrl }) {
       }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const query = input.trim();
-    if (!query) return;
-
+  // Core chat query sender — used by both the form submit and suggested chip clicks
+  const sendChatQuery = async (query) => {
     // Optimistically add user message to UI
     const userMsg = { id: Date.now().toString(), text: query, sender: 'user' };
     const updatedMessages = [...messages, userMsg];
@@ -73,6 +81,22 @@ function Chatbot({ apiUrl }) {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const query = input.trim();
+    if (!query) return;
+    sendChatQuery(query);
+  };
+
+  const handleReset = () => {
+    setMessages([INITIAL_GREETING]);
+    setInput('');
+    setIsTyping(false);
+  };
+
+  // Show suggested chips only when it's just the initial greeting and Yaksha isn't typing
+  const showSuggestions = messages.length === 1 && !isTyping;
+
   return (
     <div className="chatbot-widget">
       <button
@@ -98,7 +122,22 @@ function Chatbot({ apiUrl }) {
               <span className="status"><span className="dot"></span> Powered by Gemini AI</span>
             </div>
           </div>
-          <button className="chat-close-btn" onClick={() => setIsOpen(false)}>&times;</button>
+          <div className="chat-header-actions">
+            {/* Clear Chat / Reset Button */}
+            <button
+              className="chat-reset-btn"
+              onClick={handleReset}
+              aria-label="Clear conversation"
+              title="Clear conversation"
+              disabled={messages.length <= 1}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="1 4 1 10 7 10"></polyline>
+                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+              </svg>
+            </button>
+            <button className="chat-close-btn" onClick={() => setIsOpen(false)}>&times;</button>
+          </div>
         </div>
 
         <div className="chat-body" ref={bodyRef}>
@@ -107,6 +146,24 @@ function Chatbot({ apiUrl }) {
               <p>{msg.text}</p>
             </div>
           ))}
+
+          {/* Suggested Question Chips */}
+          {showSuggestions && (
+            <div className="chat-suggested-container">
+              <span className="chat-suggested-title">Try asking:</span>
+              <div className="chat-suggested-chips">
+                {SUGGESTED_QUESTIONS.map((q, idx) => (
+                  <button
+                    key={idx}
+                    className="chat-suggested-chip"
+                    onClick={() => sendChatQuery(q)}
+                  >
+                    {q}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
           {isTyping && (
             <div className="message loading">

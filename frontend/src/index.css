@@ -299,7 +299,54 @@ body {
   transform: rotate(30deg);
 }
 
-/* Nav needs gap adjustments for the theme button */
+/* ── Language Toggle Button ──────────────────────────────────────────────── */
+.lang-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--panel-border);
+  border-radius: 99px;
+  padding: 0.3rem 0.65rem;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+
+.lang-toggle:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="light"] .lang-toggle {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .lang-toggle:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.lang-option {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: color 0.25s ease;
+  line-height: 1;
+}
+
+.lang-option.active {
+  color: var(--accent-primary);
+}
+
+.lang-divider {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  opacity: 0.5;
+  user-select: none;
+}
+
+/* Nav needs gap adjustments for the theme + lang buttons */
 nav {
   align-items: center;
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-function Header({ onVoiceToggle, theme, onThemeToggle }) {
+function Header({ onVoiceToggle, theme, onThemeToggle, lang, onLangToggle }) {
   return (
     <header className="glass-header">
       <div className="header-container">
@@ -27,6 +27,18 @@ function Header({ onVoiceToggle, theme, onThemeToggle }) {
             Voice
           </a>
 
+          {/* Language Toggle: EN / हिंदी */}
+          <button
+            className="lang-toggle"
+            onClick={onLangToggle}
+            aria-label={lang === 'en' ? 'Switch to Hindi' : 'Switch to English'}
+            title={lang === 'en' ? 'Switch to Hindi' : 'Switch to English'}
+          >
+            <span className={`lang-option ${lang === 'en' ? 'active' : ''}`}>EN</span>
+            <span className="lang-divider">/</span>
+            <span className={`lang-option ${lang === 'hi' ? 'active' : ''}`}>हि</span>
+          </button>
+
           {/* Theme Toggle: Sun (light) / Moon (dark) */}
           <button
             className="theme-toggle-btn"
@@ -35,7 +47,6 @@ function Header({ onVoiceToggle, theme, onThemeToggle }) {
             title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
           >
             {theme === 'dark' ? (
-              /* Sun icon — shown in dark mode, click to go light */
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="5"></circle>
                 <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -48,7 +59,6 @@ function Header({ onVoiceToggle, theme, onThemeToggle }) {
                 <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
               </svg>
             ) : (
-              /* Moon icon — shown in light mode, click to go dark */
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
               </svg>

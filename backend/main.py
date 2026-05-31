@@ -18,9 +18,10 @@ if not GEMINI_API_KEY:
     raise RuntimeError("GEMINI_API_KEY is not set. Please add it to backend/.env")
 
 # ── Paths ────────────────────────────────────────────────────────────────────
-BASE_DIR   = os.path.dirname(os.path.abspath(__file__))
-FAQS_PATH  = os.path.join(BASE_DIR, "faqs.json")
-VOTES_PATH = os.path.join(BASE_DIR, "votes.json")
+BASE_DIR    = os.path.dirname(os.path.abspath(__file__))
+FAQS_PATH   = os.path.join(BASE_DIR, "faqs.json")
+FAQS_HI_PATH = os.path.join(BASE_DIR, "faqs_hi.json")
+VOTES_PATH  = os.path.join(BASE_DIR, "votes.json")
 
 # ── Build FAQ knowledge base once at startup ─────────────────────────────────
 def load_faq_text() -> str:
@@ -95,10 +96,11 @@ class ChatRequest(BaseModel):
 
 # ── FAQ endpoint ─────────────────────────────────────────────────────────────
 @app.get("/api/faqs")
-def get_faqs():
-    if not os.path.exists(FAQS_PATH):
+def get_faqs(lang: str = "en"):
+    path = FAQS_HI_PATH if lang == "hi" and os.path.exists(FAQS_HI_PATH) else FAQS_PATH
+    if not os.path.exists(path):
         raise HTTPException(status_code=404, detail="FAQ data not found")
-    with open(FAQS_PATH, "r", encoding="utf-8") as f:
+    with open(path, "r", encoding="utf-8") as f:
         data = json.load(f)
     return data
 

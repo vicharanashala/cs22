@@ -6,7 +6,7 @@ const API_BASE = 'http://localhost:8000/api';
 const USER_VOTES_KEY = 'faq_user_votes';
 const TOP_FAQ_IDS = ['q-1-1', 'q-2-1', 'q-3-3', 'q-4-1'];
 
-function FAQPage() {
+function FAQPage({ lang = 'en' }) {
   const [faqs, setFaqs] = useState([]);
   const [votes, setVotes] = useState({});        // aggregate counts from server
   const [userVotes, setUserVotes] = useState({}); // this user's choices, from localStorage
@@ -20,7 +20,7 @@ function FAQPage() {
     // Restore this user's votes from localStorage
     const saved = localStorage.getItem(USER_VOTES_KEY);
     if (saved) setUserVotes(JSON.parse(saved));
-  }, []);
+  }, [lang]);
 
   // Monitor which category is currently in view to highlight in sidebar
   useEffect(() => {
@@ -51,9 +51,10 @@ function FAQPage() {
   }, [faqs, searchQuery]);
 
   const fetchData = async () => {
+    setLoading(true);
     try {
       const [faqsRes, votesRes] = await Promise.all([
-        fetch(`${API_BASE}/faqs`),
+        fetch(`${API_BASE}/faqs?lang=${lang}`),
         fetch(`${API_BASE}/votes`)
       ]);
       const faqsData = await faqsRes.json();

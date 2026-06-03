@@ -1,60 +1,223 @@
-# Vicharanashala Internship FAQ - Full Stack App
+<div align="center">
 
-This project is a modern, full-stack FAQ web application. It features a React JS frontend with a premium dark mode UI, and a Python FastAPI backend for serving data and handling API requests.
+# 🏛️ Vicharanashala Internship Portal
+### Official FAQ & Information Hub — IIT Ropar
 
-## Folder Structure
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Vercel-black?style=for-the-badge)](https://iit-ropar-seven.vercel.app)
+[![Backend](https://img.shields.io/badge/⚙️_API-Render-46E3B7?style=for-the-badge)](https://vicharanashala-internship.onrender.com)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react)](https://react.dev)
+[![FastAPI](https://img.shields.io/badge/FastAPI-Python-009688?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
+[![Gemini](https://img.shields.io/badge/Gemini_2.0_Flash-AI-4285F4?style=for-the-badge&logo=google)](https://ai.google.dev)
 
-- `/frontend/` - Contains the React JS frontend (Vite).
-- `/backend/` - Contains the Python FastAPI server and the JSON databases (`faqs.json`, `votes.json`).
-
----
-
-## 🚀 Quick Start Guide
-
-You need to run **both** servers to see the full website in action.
-
-### 1. Start the Backend (FastAPI)
-1. Open a terminal and navigate to the `/backend` folder:
-   ```bash
-   cd backend
-   ```
-2. (Optional but recommended) Create a virtual environment:
-   ```bash
-   python -m venv venv
-   venv\Scripts\activate  # On Windows
-   ```
-3. Install the dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. Start the server:
-   ```bash
-   uvicorn main:app --reload
-   ```
-   *The backend will run on `http://localhost:8000`.*
-
-### 2. Start the Frontend (React)
-1. Open a **new, separate terminal** and navigate to the `/frontend` folder:
-   ```bash
-   cd frontend
-   ```
-2. Install the node modules (if you haven't already):
-   ```bash
-   npm install
-   ```
-3. Start the Vite development server:
-   ```bash
-   npm run dev
-   ```
-   *The frontend will run on `http://localhost:5173`.*
-
-4. **Open `http://localhost:5173` in your browser!**
+</div>
 
 ---
 
-## 🛠️ Modifying the Chatbot
-The Chatbot UI makes a `POST` request to the backend at `/api/chat`.
-To connect your own LLM API:
-1. Open `backend/main.py`
-2. Scroll down to the `@app.post("/api/chat")` function.
-3. Replace the placeholder asyncio sleep logic with your custom LLM API call in Python and return the text in the `{"answer": ...}` JSON format.
+## 🌐 Live Website
+
+**Frontend:** https://iit-ropar-seven.vercel.app
+
+**Backend API:** https://vicharanashala-internship.onrender.com
+
+---
+
+## 📌 About the Project
+
+A full-stack web application built for the **Vicharanashala Internship Programme at IIT Ropar** — a two-month, fully-online open-source internship run by Prof. Sudarshan Iyengar's lab.
+
+The portal provides:
+
+- 📚 A comprehensive, searchable **FAQ system** with bilingual support (English / Hindi)
+- 🤖 **Yaksha** — an AI assistant powered by Gemini 2.0 Flash, trained on the full internship knowledge base
+- 👍 A **voting system** so interns can upvote/downvote FAQ helpfulness
+- 📊 A live **server status** indicator and real-time clock
+- 🌙 **Dark / Light mode** toggle with persistent preference
+
+---
+
+## 🖥️ Tech Stack
+
+| Layer | Technology |
+|---------|---------|
+| **Frontend** | React 19 + Vite 8 + React Router v7 |
+| **Backend** | Python 3 + FastAPI + Uvicorn |
+| **AI / Chat** | Google Gemini 2.0 Flash (`google-genai`) |
+| **Styling** | Vanilla CSS |
+| **Deployment** | Vercel + Render |
+| **Data Storage** | JSON Flat Files |
+
+---
+
+## 🗂️ Project Structure
+
+```text
+IIT-Ropar/
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Chatbot.jsx
+│   │   │   ├── Header.jsx
+│   │   │   ├── FAQItem.jsx
+│   │   │   ├── ServerStatus.jsx
+│   │   │   └── VoiceAssistant.jsx
+│   │   ├── pages/
+│   │   │   ├── Overview.jsx
+│   │   │   └── FAQPage.jsx
+│   │   ├── App.jsx
+│   │   └── index.css
+│   ├── .env
+│   ├── .env.production
+│   └── vercel.json
+│
+├── backend/
+│   ├── main.py
+│   ├── requirements.txt
+│   ├── faqs.json
+│   ├── faqs_hi.json
+│   ├── votes.json
+│   └── .env
+│
+└── README.md
+```
+
+---
+
+## ✨ Features
+
+### 🔍 Searchable FAQ
+- Instant search across all FAQs
+- English ↔ Hindi language switch
+- Category filtering
+- Expand / Collapse controls
+
+### 🤖 Yaksha AI Assistant
+- Powered by Gemini 2.0 Flash
+- Context-aware responses
+- Internship knowledge-base integration
+- Suggested questions
+- Conversation history support
+
+### 👍 Voting System
+- Upvote / Downvote FAQ responses
+- Optimistic UI updates
+- Persistent local storage
+- Backend synchronization
+
+### 🎨 Modern UI/UX
+- Glassmorphism design
+- Dark / Light theme
+- Responsive layout
+- Smooth animations
+- Live backend status indicator
+
+---
+
+## 🚀 Running Locally
+
+### Prerequisites
+
+- Node.js 18+
+- Python 3.10+
+- Google AI Studio API Key
+
+### Backend Setup
+
+```bash
+cd backend
+
+python -m venv venv
+
+# Windows
+venv\Scripts\activate
+
+# Linux/macOS
+source venv/bin/activate
+
+pip install -r requirements.txt
+
+echo GEMINI_API_KEY=your_key_here > .env
+
+uvicorn main:app --reload
+```
+
+Backend runs on:
+
+```text
+http://localhost:8000
+```
+
+### Frontend Setup
+
+```bash
+cd frontend
+
+npm install
+
+npm run dev
+```
+
+Frontend runs on:
+
+```text
+http://localhost:5173
+```
+
+---
+
+## 🌐 Deployment
+
+| Service | Purpose |
+|----------|----------|
+| Vercel | React Frontend Hosting |
+| Render | FastAPI Backend Hosting |
+
+### Render Environment Variables
+
+```env
+GEMINI_API_KEY=your_gemini_api_key
+```
+
+### Vercel Environment Variables
+
+```env
+VITE_API_BASE=https://vicharanashala-internship.onrender.com/api
+```
+
+### Production URLs
+
+```text
+Frontend:
+https://iit-ropar-seven.vercel.app
+
+Backend:
+https://vicharanashala-internship.onrender.com
+```
+
+---
+
+## 🔌 API Reference
+
+| Method | Endpoint | Description |
+|----------|----------|----------|
+| GET | /api/health | Health check |
+| GET | /api/faqs?lang=en | English FAQs |
+| GET | /api/faqs?lang=hi | Hindi FAQs |
+| GET | /api/votes | Fetch votes |
+| POST | /api/vote | Submit vote |
+| POST | /api/chat | Chat with Yaksha AI |
+
+---
+
+## 👨‍💻 Author
+
+Built with ❤️ for the **Vicharanashala Internship Programme 2026**
+
+**IIT Ropar**  
+Lab of Prof. Sudarshan Iyengar  
+https://samagama.in
+
+---
+
+## ⭐ Support
+
+If you found this project useful, consider giving it a ⭐ on GitHub.

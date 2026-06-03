@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div align="center">
 
 # 🏛️ Vicharanashala Internship Portal
@@ -221,3 +222,6 @@ https://samagama.in
 ## ⭐ Support
 
 If you found this project useful, consider giving it a ⭐ on GitHub.
+=======
+# cs22
+>>>>>>> f81e5ad5e53caf66ab093ddd5feb6d0b20a93396

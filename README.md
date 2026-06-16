@@ -1,7 +1,7 @@
 <<<<<<< HEAD
 <div align="center">
 
-# 🏛️ Vicharanashala Internship Portal
+# 🏛️ Crowd Sourcing FAQ & AI Assistant Portal
 ### Official FAQ & Information Hub — IIT Ropar
 
 [![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Vercel-black?style=for-the-badge)](https://iit-ropar-seven.vercel.app)
